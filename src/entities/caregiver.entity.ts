@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateCol
 import { Elderly } from './elderly.entity';
 import { Exclude } from 'class-transformer';
 
-@Entity()
+@Entity('caregiver')
 export class Caregiver {
   @PrimaryGeneratedColumn('uuid')
   id: string;
