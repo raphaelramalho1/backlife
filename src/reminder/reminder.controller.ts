@@ -3,6 +3,8 @@ import { ReminderService } from './reminder.service';
 import { CreateReminderDto, UpdateReminderDto, ReminderResponseDto } from '../dto/reminder.dto';
 import { JwtService } from '@nestjs/jwt';
 import { Roles, Role } from '../auth/roles.guard';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { ElderlyOwnerGuard } from '../auth/elderly-owner.guard';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 
 @ApiTags('reminders')
@@ -16,6 +18,7 @@ export class ReminderController {
 
   @Post()
   @Roles(Role.CAREGIVER)
+  @UseGuards(JwtAuthGuard, ElderlyOwnerGuard)
   @ApiOperation({ summary: 'Criar um novo lembrete' })
   async create(
     @Body() createReminderDto: CreateReminderDto,
@@ -28,6 +31,7 @@ export class ReminderController {
 
   @Get('elderly/:elderlyId')
   @Roles(Role.CAREGIVER)
+  @UseGuards(JwtAuthGuard, ElderlyOwnerGuard)
   @ApiOperation({ summary: 'Listar todos os lembretes de um idoso' })
   async findAllByElderly(
     @Param('elderlyId') elderlyId: string,
@@ -40,6 +44,7 @@ export class ReminderController {
 
   @Get(':id')
   @Roles(Role.CAREGIVER)
+  @UseGuards(JwtAuthGuard, ElderlyOwnerGuard)
   @ApiOperation({ summary: 'Obter um lembrete específico' })
   async findOne(
     @Param('id') id: string,
@@ -52,6 +57,7 @@ export class ReminderController {
 
   @Patch(':id')
   @Roles(Role.CAREGIVER)
+  @UseGuards(JwtAuthGuard, ElderlyOwnerGuard)
   @ApiOperation({ summary: 'Atualizar um lembrete' })
   async update(
     @Param('id') id: string,
@@ -65,6 +71,7 @@ export class ReminderController {
 
   @Delete(':id')
   @Roles(Role.CAREGIVER)
+  @UseGuards(JwtAuthGuard, ElderlyOwnerGuard)
   @ApiOperation({ summary: 'Remover um lembrete' })
   async remove(
     @Param('id') id: string,

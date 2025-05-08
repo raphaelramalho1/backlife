@@ -3,6 +3,8 @@ import { MedicationService } from './medication.service';
 import { CreateMedicationDto, UpdateMedicationDto, MedicationResponseDto } from '../dto/medication.dto';
 import { JwtService } from '@nestjs/jwt';
 import { Roles, Role } from '../auth/roles.guard';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { ElderlyOwnerGuard } from '../auth/elderly-owner.guard';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 
 @ApiTags('medications')
@@ -16,6 +18,7 @@ export class MedicationController {
 
   @Post()
   @Roles(Role.CAREGIVER)
+  @UseGuards(JwtAuthGuard, ElderlyOwnerGuard)
   @ApiOperation({ summary: 'Criar um novo medicamento' })
   async create(
     @Body() createMedicationDto: CreateMedicationDto,
@@ -28,6 +31,7 @@ export class MedicationController {
 
   @Get('elderly/:elderlyId')
   @Roles(Role.CAREGIVER)
+  @UseGuards(JwtAuthGuard, ElderlyOwnerGuard)
   @ApiOperation({ summary: 'Listar todos os medicamentos de um idoso' })
   async findAllByElderly(
     @Param('elderlyId') elderlyId: string,
@@ -40,6 +44,7 @@ export class MedicationController {
 
   @Get(':id')
   @Roles(Role.CAREGIVER)
+  @UseGuards(JwtAuthGuard, ElderlyOwnerGuard)
   @ApiOperation({ summary: 'Obter um medicamento específico' })
   async findOne(
     @Param('id') id: string,
@@ -52,6 +57,7 @@ export class MedicationController {
 
   @Patch(':id')
   @Roles(Role.CAREGIVER)
+  @UseGuards(JwtAuthGuard, ElderlyOwnerGuard)
   @ApiOperation({ summary: 'Atualizar um medicamento' })
   async update(
     @Param('id') id: string,
@@ -65,6 +71,7 @@ export class MedicationController {
 
   @Delete(':id')
   @Roles(Role.CAREGIVER)
+  @UseGuards(JwtAuthGuard, ElderlyOwnerGuard)
   @ApiOperation({ summary: 'Remover um medicamento' })
   async remove(
     @Param('id') id: string,
